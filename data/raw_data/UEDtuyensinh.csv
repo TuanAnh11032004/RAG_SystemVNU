@@ -1,0 +1,20 @@
+﻿0,1,2,3
+STT,Tên ngành/ nhóm ngành tuyển sinh,Mã ngành/ Nhóm ngành,Chỉ tiêu tuyển sinh (dự kiến)
+A,Các ngành đào tạo giáo viên: Tuyển sinh theo ngành,,
+1,Sư phạm Toán học,SPT,30*
+2,Sư phạm Vật lí,SPL,20*
+3,Sư phạm Hóa học,SPH,20*
+4,Sư phạm Sinh học,SPS,20*
+5,Sư phạm Khoa học Tự nhiên,SPK,70*
+6,Sư phạm Ngữ văn,PNV,30*
+7,Sư phạm Lịch sử,PLS,20*
+8,Sư phạm Lịch sử-Địa lý,PSĐ,70*
+9,Giáo dục Tiểu học,GD4,100*
+10,Giáo dục Mầm non,GD5,70*
+B,Các ngành tuyển sinh theo nhóm ngành Tên nhóm ngành: Khoa học giáo dục và khác,,
+1,Quản trị trường học,GD3,150*
+2,Quản trị Công nghệ giáo dục,GD3,175*
+3,Khoa học giáo dục,GD3,100*
+4,Quản trị chất lượng giáo dục,GD3,150*
+5,Tham vấn học đường,GD3,175*
+6,Tâm lý học (Định hướng lâm sàng trẻ em và vị thành niên),GD3,200*
