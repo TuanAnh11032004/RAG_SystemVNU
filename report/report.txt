@@ -1,0 +1,105 @@
+BÁO CÁO BÀI TẬP  
+HỆ THỐNG TRUY VẤN CÓ TĂNG CƯỜNG TRI THỨC (RAG)  
+ỨNG DỤNG CHO TÀI LIỆU ĐẠI HỌC QUỐC GIA HÀ NỘI  
+Ngày: [Thay bằng ngày thực hiện]
+
+-------------------------------------
+MỤC LỤC  
+1. Giới thiệu  
+   1.1. Đặt vấn đề  
+   1.2. Mục tiêu  
+2. Cấu trúc dự án  
+3. Thu thập và xử lý dữ liệu  
+   3.1. Thu thập dữ liệu  
+   3.2. Tiền xử lý dữ liệu  
+4. Hệ thống RAG  
+   4.1. Bộ nhúng (Embedder)  
+   4.2. Bộ truy xuất (Retriever)  
+   4.3. Bộ sinh câu trả lời (Reader)  
+   4.4. Pipeline tổng thể  
+5. Đánh giá hệ thống  
+   5.1. Tập kiểm thử  
+   5.2. Chỉ số đánh giá  
+6. Kết luận  
+7. Phụ lục  
+
+-------------------------------------
+1. GIỚI THIỆU
+
+1.1. Đặt vấn đề  
+Bài tập này tập trung xây dựng một hệ thống RAG cho tập tài liệu liên quan đến các đơn vị thành viên của Đại học Quốc gia Hà Nội (ĐHQGHN), nhằm hỗ trợ trả lời câu hỏi tự động dựa trên ngữ cảnh.
+
+1.2. Mục tiêu  
+- Xây dựng pipeline đầy đủ cho hệ thống RAG: thu thập, xử lý, nhúng, truy hồi và sinh câu trả lời.  
+- Ứng dụng cho tài liệu tuyển sinh, đào tạo, ngành học của ĐHQGHN.  
+- Đánh giá hiệu quả hệ thống trên tập câu hỏi chuẩn.
+
+-------------------------------------
+2. CẤU TRÚC DỰ ÁN
+
+- data/: Dữ liệu thô, đã xử lý, và tập test gồm câu hỏi + đáp án tham chiếu.  
+- report/: Báo cáo dự án.  
+- results/: Kết quả chạy hệ thống.  
+- scripts/: Tập hợp script để thu thập, xử lý và vận hành hệ thống.  
+- scripts/rag_system/: Thư mục chứa các thành phần chính của hệ thống RAG:  
+  + embedder.py: Sinh vector nhúng từ văn bản.  
+  + retriever.py: Truy xuất văn bản liên quan.  
+  + reader.py: Sinh câu trả lời từ ngữ cảnh.  
+  + main.py: Chạy pipeline tổng thể.
+
+-------------------------------------
+3. THU THẬP VÀ XỬ LÝ DỮ LIỆU
+
+3.1. Thu thập dữ liệu  
+Dữ liệu được thu thập từ các trang web chính thức của ĐHQGHN và các trường thành viên (ví dụ: UET, ULIS, UEB, UED). Quá trình này được thực hiện bằng script trong scripts/data_collection.
+
+3.2. Tiền xử lý dữ liệu  
+Các script xử lý bao gồm:  
+- clean_data.py: Tiền xử lý tổng hợp.  
+- clean_csvsangtxt.py: Chuyển CSV sang định dạng văn bản.  
+- clean_datacsv.py, clean_datapdf.py: Làm sạch dữ liệu từ nhiều nguồn khác nhau.
+
+-------------------------------------
+4. HỆ THỐNG RAG
+
+4.1. Bộ nhúng (Embedder)  
+Sử dụng thư viện HuggingFace Transformers để tạo nhúng văn bản. Dữ liệu được chuyển đổi sang vector và lưu trữ trong Chroma VectorStore.
+
+4.2. Bộ truy xuất (Retriever)  
+Truy xuất top-k tài liệu phù hợp với câu hỏi người dùng. Triển khai bằng Chroma kết hợp thuật toán similarity search cosine.
+
+4.3. Bộ sinh câu trả lời (Reader)  
+Sử dụng mô hình ngôn ngữ (LLama) để sinh câu trả lời dựa trên tài liệu đã truy xuất.
+
+4.4. Pipeline tổng thể  
+Quy trình tổng thể (main.py):  
+1. Người dùng nhập câu hỏi.  
+2. Hệ thống truy xuất tài liệu liên quan.  
+3. Sinh câu trả lời dựa trên ngữ cảnh.
+
+-------------------------------------
+5. ĐÁNH GIÁ HỆ THỐNG
+
+5.1. Tập kiểm thử  
+- questions.txt: Danh sách câu hỏi thực tế về ĐHQGHN và các đơn vị thành viên.  
+- reference_answers.txt: Đáp án tham chiếu do con người cung cấp.
+
+5.2. Chỉ số đánh giá  
+Sử dụng các chỉ số:  
+- Exact Match (EM)  
+- BLEU / ROUGE  
+Kết quả được lưu trong thư mục results/.
+
+-------------------------------------
+6. KẾT LUẬN
+
+Hệ thống RAG do nhóm thực hiện đã cho kết quả khả quan trên tập dữ liệu nội bộ. Trong tương lai, hệ thống có thể được mở rộng để tích hợp mô hình lớn hơn và phục vụ người dùng qua giao diện web hoặc chatbot.  
+Một số lưu ý nhỏ:  
+- reference_answers.txt và kết quả trong results có thể có sự khác biệt vì câu hỏi trong question.txt chưa rõ ràng (ví dụ: không ghi rõ ngành/khoa thuộc trường nào).  
+- Có thể cải thiện bằng cách đặt câu hỏi rõ ràng hơn, hoặc fine-tune thêm mô hình.
+
+-------------------------------------
+7. PHỤ LỤC
+
+- Liên kết mã nguồn: https://github.com/TuanAnh11032004/RAGVNU.git 
+- Liệt kê các thư viện: xem file requirements.txt
